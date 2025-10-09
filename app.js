@@ -20,10 +20,10 @@ try {
 } catch (_) {}
 
 const homeRouter = require('./routes/home.routes');
-const authRouter = require('./routes/auth.routes');
+// const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/users.routes');
-const catwaysRouter = require('./routes/catways.routes');
-const reservationsRouter = require('./routes/reservations.routes');
+// const catwaysRouter = require('./routes/catways.routes');
+// const reservationsRouter = require('./routes/reservations.routes');
 
 const app = express();
 
@@ -46,10 +46,10 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapi));
 
 // API routes
 app.use('/', homeRouter);
-app.use('/auth', authRouter);
+// app.use('/auth', authRouter);
 app.use('/users', usersRouter);
-app.use('/catways', catwaysRouter);
-app.use('/catways', reservationsRouter);
+// app.use('/catways', catwaysRouter);
+// app.use('/catways', reservationsRouter);
 
 // 404 JSON
 app.use((req, res) => res.status(404).json({error: 'Page non trouvée'}));
