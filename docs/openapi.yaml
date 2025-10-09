@@ -25,6 +25,7 @@ security:
   - bearerAuth: []
 
 path: {}
+  # Path to define once the routes.js files are created
 
 components:
   # Global security
