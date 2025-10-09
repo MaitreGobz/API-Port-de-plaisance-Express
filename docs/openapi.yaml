@@ -1,13 +1,125 @@
 openapi: 3.0.3
 info:
   title: API Port de plaisance Russell
-  version: 0.1.0
+  version: 0.2.0
+  description: >
+    API RESTful pour gérer les catways (ponton) et leurs réservations,
+    ainsi que les utilisateurs et l'authentification.
 servers:
   - url: http://localhost:3000
-paths:
-  /health:
-    get:
-      summary: Ping
-      responses:
-        "200":
-          description: OK
+    description: Serveur local
+    variables:
+      port:
+        default: "3000"
+tags:
+  - name: Auth
+    description: Authentification (login/register)
+  - name: Catways
+    description: Gestion des catways
+  - name: Reservations
+    description: Gestion des reservations
+  - name: Users
+    description: Gestion des utilisateurs
+
+security:
+  - bearerAuth: []
+
+path: {}
+
+components:
+  # Global security
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  # Reusable parameters
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      schema: { type: string }
+      description: Id MongoDB de la ressource
+    ReservationId:
+      name: idreservation
+      in: path
+      required: true
+      schema: { type: string }
+      description: Id MongoDB de la réservation
+
+  # Schemas
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        details:
+          type: array
+          items: {type: object}
+          example:
+            - message: "catwayNumber est requis"
+              path: ["catwayNumber"]
+              type: "any.required"
+  
+  # Authentification
+  LoginInput:
+    type: object
+    required: true
+    properties:
+      name: { type: string, format: name, example: John} 
+      email: { type: string, format: email, exeample: john@example.com}
+      password: { typer: string, format: password, example: secret1234}
+  
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+        description: Token JWT à placer dans Autharozation: Bearer <token>
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+  
+  # Catways
+  Catway:
+    type: object
+    required: [catwayNumber, type]
+    properties: 
+      _id: {type: string}
+      catwayNumber: {type: integer}
+      type: {type: string, enum: [long, short]}
+      catwayState: {type: string}
+      createdAt: {type: string, format: date-time}
+      updatedAt: {type: string, format: date-time}
+  
+  CatwayCreate:
+    type: object
+    required: [catwayNumber, type]
+    properties:
+      catwayNumber: {type: integer}
+      type: {type: string, enum: [long, short]}
+      catwayState: {type: string}
+
+  #Reservations
+  Resrvation:
+    type: object
+    required: [catwayNumber, clientName, boatName, checkIn, checkOut]
+    properties:
+      _id: {type: string}
+      catwayNumber: {type: integer}
+      clientName: {type: string}
+      boatName: {type: string}
+      checkIn: {type: string, format: date-time}
+      checkOut: {type: string, format: date-time}
+      createdAt: {type: string, format: date-time}
+      updatedAtAt: {type: string, format: date-time}
+  
+  ReservationCreate:
+    type: object
+    required: [clientName, boatName, checkIn, checkOut]
+    properties:
+      clientName: {type: string}
+      boatName: {type: string}
+      checkIn: {type: string, format: date-time}
+      checkOut: {type: string, format: date-time}
