@@ -2,8 +2,12 @@ openapi: 3.0.3
 info:
   title: API Port de plaisance Russell
   version: 0.1.0
+  description: >
+    API RESTful pour gérer les catways (ponton) et leurs réservations,
+    ainsi que les utilisateurs et l'authentification.
 servers:
   - url: http://localhost:3000
+    description: Serveur local de développement
 paths:
   /health:
     get:
