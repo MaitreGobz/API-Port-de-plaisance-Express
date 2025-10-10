@@ -14,7 +14,6 @@ const catwaySchema = new Schema({
     },
     catwayState: {
         type: String,
-        default: 'disponible'
     }
 }, {
     timestamps: true
