@@ -41,7 +41,7 @@ components:
       name: id
       in: path
       required: true
-      schema: { type: string }
+      schema: { type: string, pattern: "^[0-9a-fA-F]{24}$"}
       description: Id MongoDB de la ressource
     ReservationId:
       name: idreservation
