@@ -162,6 +162,7 @@ paths:
     get:
       tags: [Catways]
       summary: Détails d’un catway
+      security: [{ bearerAuth: [] }]
       parameters:
         - $ref: "#/components/parameters/Id"
       responses:
