@@ -1,126 +1,399 @@
 openapi: 3.0.3
 info:
-  title: API Port de plaisance Russell
-  version: 0.2.0
+  title: API Port de plaisance (Express)
+  version: 0.2.1
   description: >
-    API RESTful pour gérer les catways (ponton) et leurs réservations,
-    ainsi que les utilisateurs et l'authentification.
+    API RESTful pour gérer les catways et leurs réservations,
+    ainsi que l'authentification et la gestion des utilisateurs (basique).
+
 servers:
   - url: http://localhost:3000
-    description: Serveur local
-    variables:
-      port:
-        default: "3000"
+    description: Local
+
 tags:
   - name: Auth
-    description: Authentification (login/register)
+    description: Authentification (register/login)
+  - name: Users
+    description: Gestion d'utilisateurs
   - name: Catways
     description: Gestion des catways
   - name: Reservations
-    description: Gestion des reservations
-  - name: Users
-    description: Gestion des utilisateurs
+    description: Gestion des réservations
 
-security:
-  - bearerAuth: []
+paths:
+  # Auth
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Créer un compte utilisateur
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UserRegisterInput" }
+      responses:
+        "201":
+          description: Utilisateur créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserPublic" }
+        "409":
+          description: Email déjà utilisée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
 
-path: {}
-  # Path to define once the routes.js files are created
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Se connecter et obtenir un JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LoginInput" }
+      responses:
+        "200":
+          description: Token JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+        "401":
+          description: Identifiants invalides
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
 
+  # User
+  /users:
+    post:
+      tags: [Users]
+      summary: Créer un utilisateur (admin)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UserRegisterInput" }
+      responses:
+        "201":
+          description: Utilisateur créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserPublic" }
+        "409":
+          description: Email déjà utilisée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /users/{id}:
+    patch:
+      tags: [Users]
+      summary: Modifier partiellement un utilisateur
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UserPatchInput" }
+      responses:
+        "200":
+          description: Utilisateur mis à jour
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UserPublic" }
+        "404":
+          description: Introuvable
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    delete:
+      tags: [Users]
+      summary: Supprimer un utilisateur
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "204":
+          description: Supprimé
+        "404":
+          description: Introuvable
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  # Catways
+  /catways:
+    get:
+      tags: [Catways]
+      summary: Lister tous les catways
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Liste des catways
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Catway" }
+    post:
+      tags: [Catways]
+      summary: Créer un catway
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CatwayCreate" }
+      responses:
+        "201":
+          description: Catway créé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Catway" }
+
+  /catways/{id}:
+    get:
+      tags: [Catways]
+      summary: Détails d’un catway
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "200":
+          description: Catway
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Catway" }
+        "404":
+          description: Introuvable
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    put:
+      tags: [Catways]
+      summary: Remplacer complètement un catway
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CatwayCreate" }
+      responses:
+        "200":
+          description: Catway remplacé
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Catway" }
+    patch:
+      tags: [Catways]
+      summary: Modifier partiellement un catway
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CatwayPatch" }
+      responses:
+        "200":
+          description: Catway mis à jour
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Catway" }
+    delete:
+      tags: [Catways]
+      summary: Supprimer un catway
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      responses:
+        "204":
+          description: Supprimé
+
+  # Réservations
+  /catways/{id}/reservations:
+    get:
+      tags: [Reservations]
+      summary: Lister toutes les réservations
+      description: >
+        Retourne toutes les réservations, indépendamment du catway,
+        mais la route reste structurée sous /catways pour respecter l'arborescence du projet.
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Liste de toutes les réservations
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Reservation" }
+    post:
+      tags: [Reservations]
+      summary: Créer une réservation pour un catway
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - $ref: "#/components/parameters/Id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ReservationCreate" }
+      responses:
+        "201":
+          description: Réservation créée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Reservation" }
+        "409":
+          description: Chevauchement de créneau
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+
+  /catways/{id}/reservations/{idReservation}:
+    parameters:
+      - $ref: "#/components/parameters/Id"
+      - $ref: "#/components/parameters/ReservationId"
+    get:
+      tags: [Reservations]
+      summary: Détails d’une réservation
+      responses:
+        "200":
+          description: Réservation trouvée
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Reservation" }
+        "404":
+          description: Introuvable
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+    delete:
+      tags: [Reservations]
+      summary: Supprimer une réservation
+      security: [{ bearerAuth: [] }]
+      responses:
+        "204":
+          description: Supprimée
+
+# ---------- COMPONENTS ----------
 components:
-  # Global security
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
 
-  # Reusable parameters
   parameters:
     Id:
       name: id
       in: path
       required: true
-      schema: { type: string, pattern: "^[0-9a-fA-F]{24}$"}
-      description: Id MongoDB de la ressource
+      schema: { type: string, pattern: "^[0-9a-fA-F]{24}$" }
+      description: Id MongoDB du catway
     ReservationId:
-      name: idreservation
+      name: idReservation
       in: path
       required: true
-      schema: { type: string }
+      schema: { type: string, pattern: "^[0-9a-fA-F]{24}$" }
       description: Id MongoDB de la réservation
 
-  # Schemas
   schemas:
     Error:
       type: object
       properties:
-        error:
-          type: string
-        details:
-          type: array
-          items: {type: object}
-          example:
-            - message: "catwayNumber est requis"
-              path: ["catwayNumber"]
-              type: "any.required"
-  
-  # Authentification
-  LoginInput:
-    type: object
-    required: true
-    properties:
-      name: { type: string, format: name, example: John} 
-      email: { type: string, format: email, exeample: john@example.com}
-      password: { typer: string, format: password, example: secret1234}
-  
-  LoginResponse:
-    type: object
-    properties:
-      token:
-        type: string
-        description: Token JWT à placer dans Autharozation: Bearer <token>
-        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-  
-  # Catways
-  Catway:
-    type: object
-    required: [catwayNumber, type]
-    properties: 
-      _id: {type: string}
-      catwayNumber: {type: integer}
-      type: {type: string, enum: [long, short]}
-      catwayState: {type: string}
-      createdAt: {type: string, format: date-time}
-      updatedAt: {type: string, format: date-time}
-  
-  CatwayCreate:
-    type: object
-    required: [catwayNumber, type]
-    properties:
-      catwayNumber: {type: integer}
-      type: {type: string, enum: [long, short]}
-      catwayState: {type: string}
+        error: { type: string }
 
-  #Reservations
-  Resrvation:
-    type: object
-    required: [catwayNumber, clientName, boatName, checkIn, checkOut]
-    properties:
-      _id: {type: string}
-      catwayNumber: {type: integer}
-      clientName: {type: string}
-      boatName: {type: string}
-      checkIn: {type: string, format: date-time}
-      checkOut: {type: string, format: date-time}
-      createdAt: {type: string, format: date-time}
-      updatedAtAt: {type: string, format: date-time}
-  
-  ReservationCreate:
-    type: object
-    required: [clientName, boatName, checkIn, checkOut]
-    properties:
-      clientName: {type: string}
-      boatName: {type: string}
-      checkIn: {type: string, format: date-time}
-      checkOut: {type: string, format: date-time}
+    # ---------- USERS / AUTH ----------
+    UserPublic:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string, format: email }
+      required: [id, name, email]
+
+    UserRegisterInput:
+      type: object
+      properties:
+        name: { type: string }
+        email: { type: string, format: email }
+        password: { type: string, minLength: 6 }
+      required: [name, email, password]
+
+    UserPatchInput:
+      type: object
+      properties:
+        name: { type: string }
+        email: { type: string, format: email }
+        password: { type: string, minLength: 6 }
+
+    LoginInput:
+      type: object
+      properties:
+        email: { type: string, format: email }
+        password: { type: string }
+      required: [email, password]
+
+    # ---------- CATWAYS ----------
+    Catway:
+      type: object
+      properties:
+        id: { type: string }
+        catwayNumber: { type: integer }
+        type: { type: string, enum: [long, short] }
+        catwayState: { type: string }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, catwayNumber, type]
+
+    CatwayCreate:
+      type: object
+      properties:
+        catwayNumber: { type: integer }
+        type: { type: string, enum: [long, short] }
+        catwayState: { type: string }
+      required: [catwayNumber, type]
+
+    CatwayPatch:
+      type: object
+      properties:
+        catwayNumber: { type: integer }
+        type: { type: string, enum: [long, short] }
+        catwayState: { type: string }
+
+    # ---------- RESERVATIONS ----------
+    Reservation:
+      type: object
+      properties:
+        id: { type: string }
+        catwayId: { type: string }
+        catwayNumber: { type: integer }
+        clientName: { type: string }
+        boatName: { type: string }
+        checkIn: { type: string, format: date-time }
+        checkOut: { type: string, format: date-time }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, catwayNumber, clientName, boatName, checkIn, checkOut]
+
+    ReservationCreate:
+      type: object
+      properties:
+        clientName: { type: string }
+        boatName: { type: string }
+        checkIn: { type: string, format: date-time }
+        checkOut: { type: string, format: date-time }
+      required: [clientName, boatName, checkIn, checkOut]
+
+security:
+  - bearerAuth: []
