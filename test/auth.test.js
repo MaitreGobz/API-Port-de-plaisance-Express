@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const app = require('../app');
 
 describe('Auth', () => {
-    const base = '/api/auth';
+    const base = '/auth';
     const user = {
         name: 'Alice', 
         email:'alice@test.com', 
