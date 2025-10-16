@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const app = require('../app');
 
 describe('Users (routes protégés)', () => {
-    const authBase = 'api/auth';
+    const authBase = '/auth';
     let token;
     let createdUser;
 
@@ -15,9 +15,9 @@ describe('Users (routes protégés)', () => {
         token = login.body.token;
     });
 
-    it('POST /api/users -> 201 (création)', async () => {
+    it('POST /users -> 201 (création)', async () => {
         const res = await request(app)
-            .post('/api/users')
+            .post('/users')
             .set('Authorization', `Bearer ${token}`)
             .send({name: 'Léon', email: 'leon@test.com', password: 'secret1234'});
         expect(res.status).to.equal(201);
@@ -25,25 +25,25 @@ describe('Users (routes protégés)', () => {
         expect(createdUser).to.include.keys('id', 'name', 'email');
     });
 
-    it('PATCH /api/users/:id -> 200 (maj partielle)', async () => {
+    it('PATCH /users/:id -> 200 (maj partielle)', async () => {
         const res = await request(app)
-            .patch(`/api/users/${createdUser.id}`)
+            .patch(`/users/${createdUser.id}`)
             .set('Authorization', `Bearer ${token}`)
             .send({ name: 'Bobby' });
         expect(res.status).to.equal(200);
         expect(res.body).to.have.property('name', 'Bobby');
     });
 
-    it('DELETE /api/users/:id -> 204 (suppression)', async () => {
+    it('DELETE /users/:id -> 204 (suppression)', async () => {
         const res = await request(app)
-            .delete(`/api/users/${createdUser.id}`)
+            .delete(`/users/${createdUser.id}`)
             .set('Authorization', `Bearer ${token}`);
         expect(res.status).to.equal(204);
     });
 
-    it('DELETE /api/users/:id -> 404 (déjà supprimé)', async () => {
+    it('DELETE /users/:id -> 404 (déjà supprimé)', async () => {
         const res = await request(app)
-        .delete(`/api/users/${createdUser.id}`)
+        .delete(`/users/${createdUser.id}`)
         .set('Authorization', `Bearer ${token}`);
         expect(404).to.include(res.status);
     });

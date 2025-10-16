@@ -3,8 +3,8 @@ const { expect } = require('chai');
 const app = require('../app');
 
 describe('Catways (CRUD, routes protégées)', () => {
-  const base = '/api/catways';
-  const authBase = '/api/auth';
+  const base = '/catways';
+  const authBase = '/auth';
   let token;
   let created;
 

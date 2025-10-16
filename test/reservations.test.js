@@ -10,8 +10,8 @@ function datePlus(days) {
 
 
 describe('Reservations (sous-ressource Catways)', () => {
-    const authBase = '/api/auth';
-    const catwaysBase = '/api/catways';
+    const authBase = '/auth';
+    const catwaysBase = '/catways';
 
     let token;
     let catwayId;

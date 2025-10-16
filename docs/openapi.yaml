@@ -221,7 +221,7 @@ paths:
           description: Supprimé
 
   # Réservations
-  /catways/{id}/reservations:
+  /catways/reservations:
     get:
       tags: [Reservations]
       summary: Lister toutes les réservations
