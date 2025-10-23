@@ -1,11 +1,19 @@
 require('dotenv').config();
 
+if (!process.env.JWT_SECRET) {
+  console.error('JWT_SECRET manquant');
+  process.exit(1);
+};
+
 const express = require('express');
+const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const cookieParser = require('cookie-parser');
+const { cookieAuth } = require('./middlewares/cookieAuth');
 const logger = require('morgan');
+const methodOverride = require('method-override');
 
 const cors = require('cors');
 const helmet = require('helmet');
@@ -19,11 +27,14 @@ try {
     openapi = YAML.load(openapiPath); 
 } catch (_) {}
 
+const errorManage = require('./middlewares/error');
+
 const homeRouter = require('./routes/home.routes');
 const authRouter = require('./routes/auth.routes');
 const usersRouter = require('./routes/users.routes');
 const catwaysRouter = require('./routes/catways.routes');
 const reservationsRouter = require('./routes/reservations.routes');
+const webRouter = require('./routes/web.routes');
 
 const app = express();
 
@@ -31,18 +42,31 @@ const app = express();
 mongodb.initClientDbConnection();
 
 // Security / utilitary
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      "script-src": ["'self'"],
+      "style-src": ["'self'"]
+    }
+  }
+}));
 app.use(cors());
 app.use(logger('dev'));
+app.use(express.static(path.join(__dirname, 'public'), {index: false}));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+
 app.use(cookieParser());
+app.use(cookieAuth);
 
-// Static pages
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Docs
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapi));
+// View Engine Configuration
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(expressLayouts);
+app.set('layout', 'layout');
+app.use('/', webRouter);
 
 // API routes
 app.use('/', homeRouter);
@@ -51,14 +75,11 @@ app.use('/users', usersRouter);
 app.use('/catways', catwaysRouter);
 app.use('/catways', reservationsRouter);
 
-// 404 JSON
-app.use((req, res) => res.status(404).json({error: 'Page non trouvée'}));
+// Docs
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapi));
 
-// Global error management
-app.use((err, req, res, next) => {
-    console.error('Une erreur est survenue', err);
-    const status = err.status || 500;
-    res.status(status).json({error: err.message || 'Erreur interne du serveur'});
-});
+// 404 JSON
+app.use(errorManage.notFound);
+app.use(errorManage.errorManage);
 
 module.exports = app;

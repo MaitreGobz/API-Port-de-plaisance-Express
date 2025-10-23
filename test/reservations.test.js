@@ -18,7 +18,7 @@ describe('Reservations (sous-ressource Catways)', () => {
     let reservationId;
 
     before(async () => {
-        // Auth pour routes protégées
+        // Auth for protected routes
         await request(app)
             .post(`${authBase}/register`)
             .send({ name: 'Ella', email: 'ella@test.com', password: 'secret1234' });
@@ -27,7 +27,7 @@ describe('Reservations (sous-ressource Catways)', () => {
             .send({ email: 'ella@test.com', password: 'secret1234' });
         token = login.body.token;
 
-        // Créer un catway pour les tests de réservation
+        // Create a catway for booking tests
         const catRes = await request(app)
             .post(`${catwaysBase}`)
             .set('Authorization', `Bearer ${token}`)
@@ -71,7 +71,7 @@ describe('Reservations (sous-ressource Catways)', () => {
             .post(`${catwaysBase}/${catwayId}/reservations`)
             .set('Authorization', `Bearer ${token}`)
             .send(overlap);
-        expect(409).to.include(res.status);
+        expect(res.status).to.include(409);
     });
 
     it('GET /catways/:id/reservations/{idReservation} -> 200 (détails)', async () => {

@@ -1,0 +1,14 @@
+<h1>Liste des catways</h1>
+<table class="table">
+  <thead><tr><th>#</th><th>Type</th><th>État</th><th>Actions</th></tr></thead>
+  <tbody>
+    <% for (const c of catways) { %>
+      <tr>
+        <td><%= c.catwayNumber %></td>
+        <td><%= c.type %></td>
+        <td><%= c.catwayState %></td>
+        <td><a class="btn btn-link" href="/catways/<%= c.id || c._id %>">Voir</a></td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

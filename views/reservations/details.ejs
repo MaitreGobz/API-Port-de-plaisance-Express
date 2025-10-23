@@ -1,0 +1,8 @@
+<h1>Réservation</h1>
+<dl class="def">
+  <dt>Catway</dt><dd><%= reservation.catwayNumber || reservation.catwayId %></dd>
+  <dt>Client</dt><dd><%= reservation.clientName %></dd>
+  <dt>Bateau</dt><dd><%= reservation.boatName %></dd>
+  <dt>Arrivée</dt><dd><%= (reservation.checkIn||'').toString().slice(0,10) %></dd>
+  <dt>Départ</dt><dd><%= (reservation.checkOut||'').toString().slice(0,10) %></dd>
+</dl>

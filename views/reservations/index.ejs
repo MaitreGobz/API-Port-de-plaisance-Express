@@ -1,0 +1,16 @@
+<h1>Liste des réservations</h1>
+<table class="table">
+  <thead><tr><th>Catway</th><th>Client</th><th>Bateau</th><th>Arrivée</th><th>Départ</th><th></th></tr></thead>
+  <tbody>
+    <% for (const r of reservations) { %>
+      <tr>
+        <td><%= r.catwayNumber || r.catwayId %></td>
+        <td><%= r.clientName %></td>
+        <td><%= r.boatName %></td>
+        <td><%= (r.checkIn || '').toString().slice(0,10) %></td>
+        <td><%= (r.checkOut || '').toString().slice(0,10) %></td>
+        <td><a class="btn btn-link" href="/reservations/<%= r.id || r._id %>">Voir</a></td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>

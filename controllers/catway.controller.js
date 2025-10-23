@@ -14,7 +14,7 @@ async function list(req, res, next) {
 // Get the details of a catway from its ID
 async function details(req, res, next) {
     try {
-        const catway = await catwayService.getCatwayById(req.param.id);
+        const catway = await catwayService.getCatwayById(req.params.id);
         res.json(catway);
     } catch (error) {
         next(error); 
@@ -25,6 +25,7 @@ async function details(req, res, next) {
 async function create(req, res, next) {
     try {
         const newCatway = await catwayService.createCatway(req.body);
+        res.redirect('/catways');
         res.status(201).json(newCatway)
     } catch(error) {
         next(error); 
@@ -35,7 +36,8 @@ async function create(req, res, next) {
 async function replace(req, res, next) {
     try {
         const updatedCatway = await catwayService.replaceCatway(req.params.id, req.body);
-        res.status(201).json(updatedCatway);
+        res.redirect('/catways');
+        res.status(200).json(updatedCatway);
     } catch(error) {
         next(error); 
     }
@@ -45,7 +47,8 @@ async function replace(req, res, next) {
 async function patch(req, res, next) {
     try {
         const patchedCatway = await catwayService.updateCatway(req.params.id, req.body);
-        res.status(201).json(patchedCatway); 
+        res.redirect('/catways');
+        res.status(200).json(patchedCatway); 
     } catch(error) {
         next(error); 
     }
@@ -55,6 +58,7 @@ async function patch(req, res, next) {
 async function remove(req, res, next) {
     try {
         await catwayService.deleteCatway(req.params.id);
+        res.redirect('/catways');
         res.status(204).send();
     } catch(error) {
         next(error); 
