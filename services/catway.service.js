@@ -42,7 +42,7 @@ async function replaceCatway(id, {catwayNumber, type, catwayState }) {
     const check = await Catway.findOne({ catwayNumber, _id: {$ne: id} }).lean();
     if (check) throw Object.assign(new Error('Le numéro de catway est déjà utilisé'));
     
-    const catway = await Catway.findByIdAndUpdate(id, { catwayNumber, type, catwayState }, {new: true, runValidators, overwrite: true});
+    const catway = await Catway.findByIdAndUpdate(id, { catwayNumber, type, catwayState }, {new: true, runValidators: true, overwrite: true});
     if (!catway) throw Object.assign(new Error('Catway non trouvé'), {status: 404});
     return catway.toObject();
 };

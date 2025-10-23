@@ -1,0 +1,24 @@
+<h1>Créer un compte</h1>
+
+<% if (typeof error !== 'undefined' && error) { %>
+  <p class="msg error"><%= error %></p>
+<% } %>
+
+<form action="/auth/register" method="post">
+  <div class="row">
+    <label for="name">Nom</label>
+    <input type="text" id="name" name="name" required />
+  </div>
+  <div class="row">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required />
+  </div>
+  <div class="row">
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password" required />
+  </div>
+  <button class="btn">Créer le compte</button>
+</form>
+<p style="margin-top:1rem;">
+  Déjà inscrit ? <a href="/">Connectez-vous ici</a>.
+</p>

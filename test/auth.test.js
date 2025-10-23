@@ -31,7 +31,7 @@ describe('Auth', () => {
             .post(`${base}/login`)
             .send({email: user.email, password: user.password});
         expect(res.status).to.equal(200);
-        expect(res.body).to.have.property('token').that.is.a('sting');
+        expect(res.body).to.have.property('token').that.is.a('string');
     });
 
     it('POST /auth/login -> 401 (mauvais mot de passe)', async () => {

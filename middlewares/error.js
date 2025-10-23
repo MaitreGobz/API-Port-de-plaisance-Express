@@ -1,6 +1,7 @@
 // Middleware to centralize error management
 
 function notFound(req, res) {
+    console.warn('[404]', req.method, req.originalUrl);
     res.status(404).json({error: 'Page non trouvée'});
 }
 

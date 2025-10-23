@@ -1,0 +1,245 @@
+<h1>Tableau de bord</h1>
+
+<section class="grid-2">
+  <!-- User section -->
+  <div class="card">
+    <h2>Utilisateurs</h2>
+
+    <!-- Create -->
+    <div class="card">
+      <h3>Utilisateur — Créer</h3>
+      <form class="js-rest-form" data-action-template="/users" method="post">
+        <div class="row">
+          <label>Nom</label>
+          <input name="name" required />
+        </div>
+        <div class="row">
+          <label>Email</label>
+          <input name="email" type="email" required />
+        </div>
+        <div class="row">
+          <label>Mot de passe</label>
+          <input name="password" type="password" required />
+        </div>
+        <button type="submit">Créer l’utilisateur</button>
+      </form>
+    </div>
+
+    <!-- Update -->
+    <div class="card">
+      <h3>Utilisateur — Mettre à jour</h3>
+      <form class="js-rest-form" data-action-template="/users/:id?_method=PATCH" method="post">
+        <div class="row">
+          <label>ID utilisateur</label>
+          <input name="id" placeholder="6628e9..." required />
+        </div>
+        <div class="grid-2">
+          <div class="row">
+            <label>Nom</label>
+            <input name="name" />
+          </div>
+          <div class="row">
+            <label>Email</label>
+            <input name="email" type="email" />
+          </div>
+        </div>
+        <button type="submit">Mettre à jour</button>
+      </form>
+    </div>
+
+    <!-- Delete -->
+    <div>
+      <h3>Utilisateur — Supprimer</h3>
+      <form class="js-rest-form" data-action-template="/users/:id?_method=DELETE" method="post">
+        <div class="row">
+          <label>ID utilisateur</label>
+          <input name="id" placeholder="6628e9..." required />
+        </div>
+        <button type="submit" class="secondary">Supprimer l’utilisateur</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Catways -->
+  <div class="card">
+    <h2>Catways</h2>
+
+    <!-- Create -->
+    <div>
+      <h3>Catway — Créer</h3>
+      <form class="js-rest-form" data-action-template="/catways" method="post">
+        <div class="row">
+          <label>Numéro du catway</label>
+          <input name="catwayNumber" type="number" required />
+        </div>
+        <div class="row">
+          <label>Type</label>
+          <select name="type" required>
+            <option value="long">long</option>
+            <option value="short">short</option>
+          </select>
+        </div>
+        <div class="row">
+          <label>État</label>
+          <input name="catwayState" placeholder="Libre, Occupé, En maintenance..." required />
+        </div>
+        <button type="submit">Créer le catway</button>
+      </form>
+    </div>
+
+    <!-- Update partially (PATCH) -->
+    <div>
+      <h3>Catway — Mettre à jour partielle</h3>
+      <form class="js-rest-form" data-action-template="/catways/:id?_method=PATCH" method="post">
+        <div class="row">
+          <label>ID catway</label>
+          <input name="id" placeholder="6641a2..." required />
+        </div>
+        <div class="grid-2">
+          <div class="row">
+            <label>Numéro</label>
+            <input name="catwayNumber" type="number" />
+          </div>
+          <div class="row">
+            <label>Type</label>
+            <select name="type">
+              <option value=""></option>
+              <option value="long">long</option>
+              <option value="short">short</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <label>État</label>
+          <input name="catwayState" placeholder="Libre, Occupé, En maintenance..." />
+        </div>
+        <button type="submit">Enregistrer</button>
+      </form>
+    </div>
+    
+    <!-- Update (PUT) -->
+    <div>
+      <h3>Catway — Mettre à jour totale</h3>
+      <form class="js-rest-form" data-action-template="/catways/:id?_method=PUT" method="post">
+        <div class="row">
+          <label>ID catway</label>
+          <input name="id" placeholder="6641a2..." required />
+        </div>
+        <div class="grid-2">
+          <div class="row">
+            <label>Numéro</label>
+            <input name="catwayNumber" type="number" required/>
+          </div>
+          <div class="row">
+            <label>Type</label>
+            <select name="type" required>
+              <option value=""></option>
+              <option value="long">long</option>
+              <option value="short">short</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <label>État</label>
+          <input name="catwayState" placeholder="Libre, Occupé, En maintenance..." required />
+        </div>
+        <button type="submit">Enregistrer</button>
+      </form>
+    </div>
+
+    <!-- Delete -->
+    <div>
+      <h3>Catway — Supprimer</h3>
+      <form class="js-rest-form" data-action-template="/catways/:id?_method=DELETE" method="post">
+        <div class="row">
+          <label>ID catway</label>
+          <input name="id" placeholder="6641a2..." required />
+        </div>
+        <button type="submit" class="secondary">Supprimer</button>
+      </form>
+    </div>
+
+    <!-- Catway's details -->
+    <div>
+      <details>
+        <summary>Afficher les détails d’un catway</summary>
+        <form action="/catways" method="get">
+          <div class="row"><label>Id</label><input name="id" required></div>
+          <button class="btn">Voir la fiche</button>
+        </form>
+      </details>
+    </div>
+  </div>
+
+  <!-- Reservations -->
+  <div class="card">
+    <h2>Réservations</h2>
+
+    <!-- Create -->
+    <div>
+      <h3>Réservation — Créer</h3>
+      <form class="js-rest-form" data-action-template="/catways/:id/reservations" method="post">
+        <div class="row">
+          <label>ID catway</label>
+          <input name="id" placeholder="6641a2..." required />
+        </div>
+        <div class="row">
+          <label>Nom du client</label>
+          <input name="clientName" required />
+        </div>
+        <div class="row">
+          <label>Nom du bateau</label>
+          <input name="boatName" required />
+        </div>
+        <div class="grid-2">
+          <div class="row">
+            <label>Arrivée</label>
+            <input name="checkIn" type="datetime-local" required />
+          </div>
+          <div class="row">
+            <label>Départ</label>
+            <input name="checkOut" type="datetime-local" required />
+          </div>
+        </div>
+        <button type="submit">Créer la réservation</button>
+      </form>
+    </div>
+
+    <!-- Delete -->
+    <div>
+      <h2>Réservation — Supprimer</h2>
+      <form class="js-rest-form" data-action-template="/catways/:id/reservations/:reservationId?_method=DELETE" method="post">
+        <div class="row">
+          <label>ID catway</label>
+          <input name="id" placeholder="6641a2..." required />
+        </div>
+        <div class="row">
+          <label>ID réservation</label>
+          <input name="reservationId" placeholder="66a0c9..." required />
+        </div>
+        <button type="submit" class="secondary">Supprimer la réservation</button>
+      </form>
+    </div>
+
+    <!-- Reservation'details -->
+    <div>
+      <details>
+        <summary>Afficher les détails d’une réservation</summary>
+        <form action="/reservations" method="get">
+          <div class="row"><label>Catway Id</label><input name="catway" required></div>
+          <div class="row"><label>Réservation Id</label><input name="id" required></div>
+          <button class="btn">Voir la fiche</button>
+        </form>
+      </details>
+    </div>
+  </div>
+
+  <aside class="card">
+    <h2>Navigation</h2>
+    <p>
+      <a class="btn btn-link" href="/catways">→ Liste des catways</a><br>
+      <a class="btn btn-link" href="/reservations">→ Liste des réservations</a>
+    </p>
+  </aside>
+  <script src="/javascripts/dashboard.js"></script>
+</section>

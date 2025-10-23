@@ -9,7 +9,7 @@ describe('Catways (CRUD, routes protégées)', () => {
   let created;
 
   before(async () => {
-    // Auth pour routes protégées
+    // Auth for protected routes
     await request(app).post(`${authBase}/register`).send({ name: 'Root', email: 'root@test.com', password: 'secret123' });
     const login = await request(app)
         .post(`${authBase}/login`)
@@ -53,13 +53,13 @@ describe('Catways (CRUD, routes protégées)', () => {
     });
 
     it('PUT /catways/:id -> 200 (remplacement complet)', async () => {
-        const payload = { catwayNumber: 101, type: 'short', catwayState: 'occupied' };
+        const payload = { catwayNumber: 101, type: 'short', catwayState: 'mauvais état' };
         const res = await request(app)
             .put(`${base}/${created.id}`)
             .set('Authorization', `Bearer ${token}`)
             .send(payload);
         expect(res.status).to.equal(200);
-        expect(res.body).to.include({ catwayNumber: 101, type: 'short', catwayState: 'occupied' });
+        expect(res.body).to.include({ catwayNumber: 101, type: 'short', catwayState: 'mauvais état' });
     });
 
     it('DELETE /catways/:id -> 204 (suppression)', async () => {

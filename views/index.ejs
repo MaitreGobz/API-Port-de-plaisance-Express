@@ -1,0 +1,27 @@
+<h1>Bienvenue au port de plaisance Russell</h1>
+<h2>Gestion du port de plaisance</h2>
+
+<% if (typeof error !== 'undefined' && error) { %>
+  <p class="msg"><%= error %></p>
+<% } %>
+
+<section class="card">
+    <h2>Connexion</h2>
+    <form action="/auth/login" method="post">
+        <div class="row">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required />
+        </div>
+        <div class="row">
+            <label for="password">Mot de passe</label>
+            <input type="password" name="password" id="password" required />
+        </div>
+        <button class="btn">Se connecter</button>
+    </form>
+    <p>
+        <a href="/auth/register">S'enregistrer</a>
+    </p>
+    <p>
+        <a href="/docs">Voir la documentation</a>
+    </p>
+</section>

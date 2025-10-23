@@ -3,7 +3,7 @@ const Reservation = require('../models/Reservation');
 
 // List of reservation
 
-async function listReservation() {
+async function listReservations() {
     const listItems = await Reservation.find().sort({catwayNumber: 1, checkIn: 1}).lean();
     return listItems;
 };
@@ -19,14 +19,16 @@ async function getReservationById(idReservation) {
 // Create reservation with slot overlap control
 
 async function createReservation(catwayId, { clientName, boatName, checkIn, checkOut}) {
+    const cat = await Catway.findById(catwayId).lean();
     const overlap = await Reservation.findOne({
         catwayId,
         checkIn: {$lt: new Date(checkOut)},
-        checkOut: {$gt: new Date(checkOut)},
+        checkOut: {$gt: new Date(checkIn)},
     }).lean();
     if (overlap) throw Object.assign(new Error('Créneau déjà réservé sur ce catway'));
     const created = await Reservation.create({
-        catwayNumber,
+        catwayId,
+        catwayNumber: cat.catwayNumber,
         clientName,
         boatName,
         checkIn,
@@ -43,7 +45,7 @@ async function deleteReservation(idReservation) {
 }
 
 module.exports = {
-    listReservation,
+    listReservations,
     getReservationById,
     createReservation,
     deleteReservation,

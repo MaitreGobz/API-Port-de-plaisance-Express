@@ -16,7 +16,7 @@ const createReservationSchema = Joi.object({
     checkIn: Joi.date().iso().required(),
     checkOut: Joi.date().iso().required(),
 }).custom(checkInBeforeOut, 'vérifier les dates').message({
-    'date.order': 'La date de checkIn doit être autérieur à checkOut',
+    'date.order': 'La date de checkIn doit être antérieur à checkOut',
 });
 
 const catwayIdParamSelect = Joi.object({

@@ -3,18 +3,26 @@
 const jwt = require('jsonwebtoken');
 
 function auth(req, res, next) {
-    const header = req.headers.authorization || '';
-    const token = header.startsWith('Bearer ' ? header.slice(7) : null);
+     try {
+        if (req.user && req.user.id) return next();
 
-    if(!token) return res.status(401).json({error: 'Token manquant'});
+        const cookieToken = req.cookies?.token;
+        if (cookieToken) {
+            const payload = jwt.verify(cookieToken, process.env.JWT_SECRET);
+            req.user = payload;
+            return next();
+        }
 
-    try {
+        const header = req.headers.authorization || '';
+        const token = header.startsWith('Bearer ') ? header.slice(7) : null;
+        if (!token) return res.status(401).json({ error: 'Token manquant' });
+
         const payload = jwt.verify(token, process.env.JWT_SECRET);
         req.user = payload;
-        next();
+        return next();
     } catch {
-        res.status(401).json({error: 'Token invalide'});
+        return res.status(401).json({ error: 'Token invalide' });
     }
-}
+};
 
 module.exports = { auth };
