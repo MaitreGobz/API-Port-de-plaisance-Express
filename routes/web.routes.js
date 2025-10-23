@@ -75,14 +75,6 @@ router.get('/dashboard', requireAuth, (req, res) => {
   res.render('dashboard', { title: 'Tableau de bord', user: req.user });
 });
 
-// List of catways
-router.get('/catways', requireAuth, async (req, res, next) => {
-  try {
-    const catways = await CatwayService.listCatways();
-    res.render('catways/index', { title: 'Catways', catways });
-  } catch (e) { next(e); }
-});
-
 // Catway details
 router.get('/catways/:id', requireAuth, async (req, res, next) => {
   try {
@@ -93,11 +85,11 @@ router.get('/catways/:id', requireAuth, async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// Global Reservations List
-router.get('/reservations', requireAuth, async (req, res, next) => {
+// List of catways
+router.get('/catways', requireAuth, async (req, res, next) => {
   try {
-    const reservations = await ReservationService.listReservations();
-    res.render('reservations/index', { title: 'Réservations', reservations });
+    const catways = await CatwayService.listCatways();
+    res.render('catways/index', { title: 'Catways', catways });
   } catch (e) { next(e); }
 });
 
@@ -106,6 +98,14 @@ router.get('/reservations/:id', requireAuth, async (req, res, next) => {
   try {
     const reservation = await ReservationService.getReservationById(req.params.id);
     res.render('reservations/details', { title: 'Réservation', reservation });
+  } catch (e) { next(e); }
+});
+
+// Global Reservations List
+router.get('/reservations', requireAuth, async (req, res, next) => {
+  try {
+    const reservations = await ReservationService.listReservations();
+    res.render('reservations/index', { title: 'Réservations', reservations });
   } catch (e) { next(e); }
 });
 

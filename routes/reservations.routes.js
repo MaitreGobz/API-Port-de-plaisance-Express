@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const { auth } = require('../middlewares/auth');
 const { validate } = require('../middlewares/validate');
-const { createReservationSchema, catwayIdParamSelect, reservationIdParam } = require('../validators/reservation.schema');
+const { createReservationSchema, catwayIdParamSelect, reservationIdParam, bothIdParams } = require('../validators/reservation.schema');
 const reservationCtrl = require('../controllers/reservation.controller');
 
 // Reservations's list
@@ -15,6 +15,6 @@ router.post('/:id/reservations', auth, validate(catwayIdParamSelect, 'params'), 
 router.get('/:id/reservations/:idReservation', auth, validate(catwayIdParamSelect, 'params'), validate(reservationIdParam, 'params'), reservationCtrl.details);
 
 // Delete a reservation
-router.delete('/:id/reservations/:idReservation', auth, validate(catwayIdParamSelect, 'params'), validate(reservationIdParam, 'params'), reservationCtrl.remove);
+router.delete('/:id/reservations/:idReservation', auth, validate(bothIdParams, 'params'), reservationCtrl.remove);
 
 module.exports = router;

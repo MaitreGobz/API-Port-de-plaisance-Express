@@ -161,13 +161,11 @@
 
     <!-- Catway's details -->
     <div>
-      <details>
-        <summary>Afficher les détails d’un catway</summary>
-        <form action="/catways" method="get">
-          <div class="row"><label>Id</label><input name="id" required></div>
+        <h3>Catway - Détails</h3>
+        <form class="js-go-to-show" data-template="/catways/:id" method="get">
+          <div class="row"><label>ID Catway</label><input name="id" required></div>
           <button class="btn">Voir la fiche</button>
         </form>
-      </details>
     </div>
   </div>
 
@@ -208,14 +206,14 @@
     <!-- Delete -->
     <div>
       <h2>Réservation — Supprimer</h2>
-      <form class="js-rest-form" data-action-template="/catways/:id/reservations/:reservationId?_method=DELETE" method="post">
+      <form class="js-rest-form" data-action-template="/catways/:id/reservations/:idReservation?_method=DELETE" method="post">
         <div class="row">
           <label>ID catway</label>
-          <input name="id" placeholder="6641a2..." required />
+          <input name="id" placeholder="66a0c9..." required />
         </div>
         <div class="row">
           <label>ID réservation</label>
-          <input name="reservationId" placeholder="66a0c9..." required />
+          <input name="idReservation" placeholder="66a0c9..." required />
         </div>
         <button type="submit" class="secondary">Supprimer la réservation</button>
       </form>
@@ -223,14 +221,11 @@
 
     <!-- Reservation'details -->
     <div>
-      <details>
-        <summary>Afficher les détails d’une réservation</summary>
-        <form action="/reservations" method="get">
-          <div class="row"><label>Catway Id</label><input name="catway" required></div>
-          <div class="row"><label>Réservation Id</label><input name="id" required></div>
+        <h3>Réservation - Détails</h3>
+        <form class="js-go-to-show" data-template="/reservations/:id" method="get">
+          <div class="row"><label>ID Réservation</label><input name="id" required></div>
           <button class="btn">Voir la fiche</button>
         </form>
-      </details>
     </div>
   </div>
 
