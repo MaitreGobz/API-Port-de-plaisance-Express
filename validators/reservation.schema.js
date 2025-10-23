@@ -27,8 +27,14 @@ const reservationIdParam = Joi.object({
     idReservation: Joi.string().hex().length(24).required(),
 });
 
+const bothIdParams = Joi.object({
+    id: Joi.string().hex().length(24).required(),
+    idReservation: Joi.string().hex().length(24).required(),
+});
+
 module.exports = {
     createReservationSchema,
     catwayIdParamSelect,
     reservationIdParam,
+    bothIdParams
 };
