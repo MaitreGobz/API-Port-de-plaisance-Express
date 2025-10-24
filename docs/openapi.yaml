@@ -237,6 +237,8 @@ paths:
               schema:
                 type: array
                 items: { $ref: "#/components/schemas/Reservation" }
+
+  /catway/{id}/reservations:
     post:
       tags: [Reservations]
       summary: Créer une réservation pour un catway
@@ -267,6 +269,7 @@ paths:
     get:
       tags: [Reservations]
       summary: Détails d’une réservation
+      security: [{ bearerAuth: [] }]
       responses:
         "200":
           description: Réservation trouvée
