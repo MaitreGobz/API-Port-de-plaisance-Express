@@ -1,6 +1,6 @@
 <h1>Tableau de bord</h1>
 
-<section class="grid-2">
+<section class="grid-2 dashboard">
   <!-- User section -->
   <div class="card">
     <h2>Utilisateurs</h2>
@@ -48,7 +48,7 @@
     </div>
 
     <!-- Delete -->
-    <div>
+    <div class="card">
       <h3>Utilisateur — Supprimer</h3>
       <form class="js-rest-form" data-action-template="/users/:id?_method=DELETE" method="post">
         <div class="row">
@@ -65,7 +65,7 @@
     <h2>Catways</h2>
 
     <!-- Create -->
-    <div>
+    <div class="card">
       <h3>Catway — Créer</h3>
       <form class="js-rest-form" data-action-template="/catways" method="post">
         <div class="row">
@@ -88,7 +88,7 @@
     </div>
 
     <!-- Update partially (PATCH) -->
-    <div>
+    <div class="card">
       <h3>Catway — Mettre à jour partielle</h3>
       <form class="js-rest-form" data-action-template="/catways/:id?_method=PATCH" method="post">
         <div class="row">
@@ -118,7 +118,7 @@
     </div>
     
     <!-- Update (PUT) -->
-    <div>
+    <div class="card">
       <h3>Catway — Mettre à jour totale</h3>
       <form class="js-rest-form" data-action-template="/catways/:id?_method=PUT" method="post">
         <div class="row">
@@ -148,7 +148,7 @@
     </div>
 
     <!-- Delete -->
-    <div>
+    <div class="card">
       <h3>Catway — Supprimer</h3>
       <form class="js-rest-form" data-action-template="/catways/:id?_method=DELETE" method="post">
         <div class="row">
@@ -160,7 +160,7 @@
     </div>
 
     <!-- Catway's details -->
-    <div>
+    <div class="card">
         <h3>Catway - Détails</h3>
         <form class="js-go-to-show" data-template="/catways/:id" method="get">
           <div class="row"><label>ID Catway</label><input name="id" required></div>
@@ -174,7 +174,7 @@
     <h2>Réservations</h2>
 
     <!-- Create -->
-    <div>
+    <div class="card">
       <h3>Réservation — Créer</h3>
       <form class="js-rest-form" data-action-template="/catways/:id/reservations" method="post">
         <div class="row">
@@ -204,7 +204,7 @@
     </div>
 
     <!-- Delete -->
-    <div>
+    <div class="card">
       <h2>Réservation — Supprimer</h2>
       <form class="js-rest-form" data-action-template="/catways/:id/reservations/:idReservation?_method=DELETE" method="post">
         <div class="row">
@@ -220,7 +220,7 @@
     </div>
 
     <!-- Reservation'details -->
-    <div>
+    <div class="card">
         <h3>Réservation - Détails</h3>
         <form class="js-go-to-show" data-template="/reservations/:id" method="get">
           <div class="row"><label>ID Réservation</label><input name="id" required></div>

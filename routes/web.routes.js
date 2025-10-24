@@ -109,7 +109,4 @@ router.get('/reservations', requireAuth, async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// Docs
-router.get('/docs', (req, res) => res.render('docs', { title: 'Documentation' }));
-
 module.exports = router;
