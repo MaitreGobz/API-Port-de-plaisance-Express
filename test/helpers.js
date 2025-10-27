@@ -17,7 +17,7 @@ async function makeLoggedAgent({
   // REGISTER
   const request1 = await agent
     .post('/auth/register')
-    .type('form') // ou .send JSON selon ton contrôleur; garde les deux au besoin
+    .type('form')
     .send({ name, email, password });
   expectStatus(request1, [200, 201, 302]);
 

@@ -26,7 +26,6 @@ describe('API Port Russell - 9 fonctionnalités (tests unitaires)', function () 
     const res = await agent.get('/catways');
     expect(res.status).to.equal(200);
     expect(res.body).to.be.an('array');
-    // on doit y retrouver notre catway
     const found = res.body.find(c => c._id === catwayId);
     expect(found).to.be.ok;
   });
