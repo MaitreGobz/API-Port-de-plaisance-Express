@@ -37,15 +37,31 @@ document.addEventListener('submit', function (e) {
 
   e.preventDefault();
 
-  const template = f.getAttribute('data-template'); // ex: "/catways/:id"
-  const id  = (f.querySelector('[name="id"]') || {}).value?.trim() || '';
+  const template = f.getAttribute('data-template');
 
   if (!template) return;
-  if (!/^[0-9a-fA-F]{24}$/.test(id)) {
-    alert('Id invalide (24 caractères hexadécimaux attendus).');
+    const idInput  = f.querySelector('[name="id"]');
+    const resInput = f.querySelector('[name="idReservation"]');
+
+  let action = template;
+  if (idInput && idInput.value) {
+    action = action.replace(':id', encodeURIComponent(idInput.value.trim()));
+  }
+  if (resInput && resInput.value) {
+    action = action.replace(':idReservation', encodeURIComponent(resInput.value.trim()));
+  }
+  console.log('[form submit]', {
+    before: f.getAttribute('action'),
+    template,
+    final: action
+  });
+
+  f.setAttribute('action', action);
+
+  if (action.includes(':')) {
+    e.preventDefault();
+    alert("Formulaire incomplet. Vérifiez les champs.");
     return;
   }
-
-  const href = template.replace(':id', encodeURIComponent(id));
-  window.location.href = href;
-})
+  window.location.href = action;
+});

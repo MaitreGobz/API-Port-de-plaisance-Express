@@ -72,8 +72,9 @@ app.use('/', webRouter);
 app.use('/', homeRouter);
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
-app.use('/catways', catwaysRouter);
 app.use('/catways', reservationsRouter);
+app.use('/catways', catwaysRouter);
+
 
 // Docs
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapi));

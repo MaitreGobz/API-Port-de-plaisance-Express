@@ -4,8 +4,7 @@ const userService = require('../services/user.service');
 async function create(req, res, next) {
     try{
         const user = await userService.createUser(req.body);
-        res.redirect('/dashboard');
-        res.status(201).json(user);
+        return res.status(201).json(user);
     } catch(error) {
         next(error); 
     }
@@ -15,8 +14,7 @@ async function create(req, res, next) {
 async function update(req, res, next) {
     try {
         const updated = await userService.updateUser(req.params.id, req.body);
-        res.redirect('/dashboard');
-        res.status(200).json(updated);
+        return res.status(200).json(updated);
     } catch(error) {
         next(error);
     }
@@ -26,8 +24,7 @@ async function update(req, res, next) {
 async function remove(req, res, next) {
     try {
         await userService.deleteUser(req.params.id);
-        res.redirect('/dashboard');
-        return res.status(204).send();
+        return res.status(204).json();
     } catch(error) {
         next(error);
     }

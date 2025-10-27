@@ -6,7 +6,7 @@
     "seed": "node scripts/seedData.js",
     "dev": "nodemon ./bin/www",
     "start": "node ./bin/www",
-    "test": "mocha \"test/**/*.test.js\""
+    "test": "mocha --file test/setup.js test/features.test.js --timeout 60000 --exit"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -29,6 +29,7 @@
   "devDependencies": {
     "chai": "^6.2.0",
     "mocha": "^11.7.4",
+    "mongodb-memory-server": "^10.2.3",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.4"
   }

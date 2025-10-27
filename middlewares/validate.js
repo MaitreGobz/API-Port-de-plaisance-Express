@@ -7,7 +7,7 @@ function validate(schema, where = 'body') {
         // Validates the received data, returns errors and deletes fields that are not provided
         const { error, value } = schema.validate(req[where], {abortEarly: false, stripUnknown: true});
         if (error) return res.status(422).json({error: 'Validation error', details: error.details});
-        req[where] = value;
+        req[where] = { ...req[where], ...value };
         next();
     };
 };

@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 const { auth } = require('../middlewares/auth');
 const { validate } = require('../middlewares/validate');
 const { createReservationSchema, catwayIdParamSelect, reservationIdParam, bothIdParams } = require('../validators/reservation.schema');
@@ -12,7 +12,7 @@ router.get('/reservations', auth, reservationCtrl.list);
 router.post('/:id/reservations', auth, validate(catwayIdParamSelect, 'params'), validate(createReservationSchema), reservationCtrl.create);
 
 // Reservation's details
-router.get('/:id/reservations/:idReservation', auth, validate(catwayIdParamSelect, 'params'), validate(reservationIdParam, 'params'), reservationCtrl.details);
+router.get('/:id/reservations/:idReservation', auth, validate(bothIdParams, 'params'), reservationCtrl.details);
 
 // Delete a reservation
 router.delete('/:id/reservations/:idReservation', auth, validate(bothIdParams, 'params'), reservationCtrl.remove);
