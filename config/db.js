@@ -1,9 +1,8 @@
-// config/db.js
 const mongoose = require('mongoose');
 
 let connectingPromise = null;
 
-/** Connexion générique (utilisée par initClientDbConnection et en prod) */
+// Generic connection
 async function connect(uri) {
   const url =
     uri ||
@@ -14,9 +13,9 @@ async function connect(uri) {
     dbName: process.env.MONGO_DBNAME || undefined,
   };
 
-  // Déjà connecté ?
+  // Already logged in?
   if (mongoose.connection.readyState === 1) return mongoose;
-  // Connexion en cours ?
+  // Connecting?
   if (connectingPromise) return connectingPromise;
 
   connectingPromise = mongoose
@@ -38,12 +37,12 @@ async function connect(uri) {
   return connectingPromise;
 }
 
-/** Alias gardant le nom attendu par app.js */
+// Alias keeping the name expected by app.js
 async function initClientDbConnection(uri) {
   return connect(uri);
 }
 
-/** Fermeture propre (utile en teardown) */
+// Clean closing
 async function closeClientDbConnection() {
   if (mongoose.connection.readyState !== 0) {
     try {
