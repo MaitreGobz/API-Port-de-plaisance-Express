@@ -9,7 +9,7 @@
         <td><%= r.boatName %></td>
         <td><%= (r.checkIn || '').toString().slice(0,10) %></td>
         <td><%= (r.checkOut || '').toString().slice(0,10) %></td>
-        <td><a class="btn btn-link" href="/reservations/<%= r.id || r._id %>">Voir</a></td>
+        <td><a class="btn btn-link" href="/web/catways/<%= r.catwayId || r.catway %>/reservations/<%= r._id %>">Voir</a></td>
       </tr>
     <% } %>
   </tbody>

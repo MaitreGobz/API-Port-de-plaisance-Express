@@ -21,6 +21,11 @@ async function getReservationById(idReservation) {
 
 async function createReservation(catwayId, { clientName, boatName, checkIn, checkOut}) {
     const cat = await Catway.findById(catwayId).lean();
+    if (!cat) {
+        const err = new Error('Catway non trouvé');
+        err.status = 404;
+        throw err;
+    }
     const overlap = await Reservation.findOne({
         catwayId,
         checkIn: {$lt: new Date(checkOut)},

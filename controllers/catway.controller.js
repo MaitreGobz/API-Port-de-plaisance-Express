@@ -5,7 +5,7 @@ const catwayService = require('../services/catway.service');
 async function list(req, res, next) {
     try {
         const catways = await catwayService.listCatways(req.query);
-        res.json(catways);
+        return res.status(200).json(catways);
     } catch (error) {
         next(error); 
     }
@@ -15,7 +15,7 @@ async function list(req, res, next) {
 async function details(req, res, next) {
     try {
         const catway = await catwayService.getCatwayById(req.params.id);
-        res.json(catway);
+        return res.status(200).json(catway);       
     } catch (error) {
         next(error); 
     }
@@ -25,8 +25,7 @@ async function details(req, res, next) {
 async function create(req, res, next) {
     try {
         const newCatway = await catwayService.createCatway(req.body);
-        res.redirect('/catways');
-        res.status(201).json(newCatway)
+        return res.status(201).json(newCatway)
     } catch(error) {
         next(error); 
     }
@@ -36,8 +35,7 @@ async function create(req, res, next) {
 async function replace(req, res, next) {
     try {
         const updatedCatway = await catwayService.replaceCatway(req.params.id, req.body);
-        res.redirect('/catways');
-        res.status(200).json(updatedCatway);
+        return res.status(200).json(updatedCatway);
     } catch(error) {
         next(error); 
     }
@@ -47,8 +45,7 @@ async function replace(req, res, next) {
 async function patch(req, res, next) {
     try {
         const patchedCatway = await catwayService.updateCatway(req.params.id, req.body);
-        res.redirect('/catways');
-        res.status(200).json(patchedCatway); 
+        return res.status(200).json(patchedCatway); 
     } catch(error) {
         next(error); 
     }
@@ -58,8 +55,7 @@ async function patch(req, res, next) {
 async function remove(req, res, next) {
     try {
         await catwayService.deleteCatway(req.params.id);
-        res.redirect('/catways');
-        res.status(204).send();
+        return res.status(204).json();
     } catch(error) {
         next(error); 
     }

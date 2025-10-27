@@ -38,11 +38,10 @@ router.post('/auth/login', validate(loginSchema), async (req, res, next) => {
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
-    res.redirect('/dashboard');
+    return res.redirect('/dashboard');
   } catch (e) { next(e); }
 });
 
-// Register a user
 router.get('/auth/register', (req,res) => {
   res.render('register', {title: 'Créer un compte'});
 });
@@ -51,20 +50,19 @@ router.post('/auth/register', async (req, res, next) => {
     const { name, email, password } = req.body;
     const existing = await User.findOne({ email });
     if (existing) {
-      return res.status(409).render('register', { 
-        title: 'Créer un compte', 
-        error: 'Cet email est déjà utilisé.' 
+      return res.status(409).render('register', {
+        title: 'Créer un compte',
+        error: 'Cet email est déjà utilisé.'
       });
     }
     const hashed = await bcrypt.hash(password, 10);
     await User.create({ name, email, password: hashed });
-    res.redirect('/');
+    return res.redirect('/');
   } catch (err) {
     next(err);
   }
 });
 
-// Logout: Clears the cookie and redirects
 router.post('/auth/logout', (req, res) => {
   res.clearCookie('token');
   res.redirect('/');
@@ -76,7 +74,7 @@ router.get('/dashboard', requireAuth, (req, res) => {
 });
 
 // Catway details
-router.get('/catways/:id', requireAuth, async (req, res, next) => {
+router.get('/web/catways/:id', requireAuth, async (req, res, next) => {
   try {
     const id = req.params.id;
     const cat = await CatwayService.getCatwayById(id);
@@ -86,7 +84,7 @@ router.get('/catways/:id', requireAuth, async (req, res, next) => {
 });
 
 // List of catways
-router.get('/catways', requireAuth, async (req, res, next) => {
+router.get('/web/catways', requireAuth, async (req, res, next) => {
   try {
     const catways = await CatwayService.listCatways();
     res.render('catways/index', { title: 'Catways', catways });
@@ -94,15 +92,16 @@ router.get('/catways', requireAuth, async (req, res, next) => {
 });
 
 // Reservation details
-router.get('/reservations/:id', requireAuth, async (req, res, next) => {
+router.get('/web/catways/:id/reservations/:idReservation', requireAuth, async (req, res, next) => {
   try {
-    const reservation = await ReservationService.getReservationById(req.params.id);
-    res.render('reservations/details', { title: 'Réservation', reservation });
+    const { idReservation } = req.params;
+    const reservation = await ReservationService.getReservationById(idReservation);
+    return res.render('reservations/details', { title: 'Réservation', reservation });
   } catch (e) { next(e); }
 });
 
 // Global Reservations List
-router.get('/reservations', requireAuth, async (req, res, next) => {
+router.get('/web/reservations', requireAuth, async (req, res, next) => {
   try {
     const reservations = await ReservationService.listReservations();
     res.render('reservations/index', { title: 'Réservations', reservations });
